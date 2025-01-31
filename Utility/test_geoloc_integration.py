@@ -20,8 +20,10 @@ def test_integration_valid_zip_code():
     geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
     result = geo_util.fetch_location_data("12345")
     assert result is not None
-    assert 'lat' in result
-    assert 'lon' in result
+    assert result[0]['country'] == 'US'
+    assert result[0]['name'] == 'Schenectady'
+    assert result[0]['lat'] == 42.8142
+    assert result[0]['lon'] == -73.9396
 
 def test_integration_invalid_city():
     geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
