@@ -72,7 +72,7 @@ class TestGeoLocationUtility(unittest.TestCase):
             self.assertEqual(result[0]['lat'], test_data[location]['lat'], f"Location name mismatch for {locations[location]}")
             self.assertEqual(result[0]['lon'], test_data[location]['lon'], f"Location name mismatch for {locations[location]}")
 
-    def test_geolocation_output(self):
+    def test_geolocation_output_multi_location(self):
         # Input locations
         locations = ["Columbus, OH", "Chicago, IL"]
 
@@ -98,6 +98,64 @@ class TestGeoLocationUtility(unittest.TestCase):
                  "Longitude: -87.6244212\n"
                  "Country: US\n"
                 "========================================\n"
+        )
+
+        # Assert the output matches the expected output
+        self.assertEqual(output, expected_output)
+
+    def test_geolocation_output_multi_zipcode(self):
+        # Input locations
+        locations = ["01235", "54636"]
+
+        # Run the command as a subprocess
+        command = ["python", "geoloc_util.py", "--locations"] + locations
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+        # Check if the command ran successfully
+        self.assertEqual(result.returncode, 0)
+
+        # Get the output of the command
+        output = result.stdout
+
+        # Expected Output structure
+        expected_output = (
+            "Location: Peru, Massachusetts\n"
+            "Latitude: 42.4298\n"
+            "Longitude: -73.0724\n"
+            "Country: US\n"
+            "========================================\n"
+            "Location: Town of Onalaska, Wisconsin\n"
+            "Latitude: 43.9761\n"
+            "Longitude: -91.2497\n"
+            "Country: US\n"
+            "========================================\n"
+        )
+
+        # Assert the output matches the expected output
+        self.assertEqual(output, expected_output)
+
+    def test_geolocation_zipcode_with_invalid(self):
+        # Input locations
+        locations = ["01235", ";;;;;"]
+
+        # Run the command as a subprocess
+        command = ["python", "geoloc_util.py", "--locations"] + locations
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+        # Check if the command ran successfully
+        self.assertEqual(result.returncode, 0)
+
+        # Get the output of the command
+        output = result.stdout
+
+        # Expected Output structure
+        expected_output = (
+            "Location: Peru, Massachusetts\n"
+            "Latitude: 42.4298\n"
+            "Longitude: -73.0724\n"
+            "Country: US\n"
+            "========================================\n"
+            "Request failed: 404 Client Error: Not Found for url: http://api.openweathermap.org/geo/1.0/zip?zip=;;;;;,US&appid=f897a99d971b5eef57be6fafa0d83239\nError: Unable to fetch data for ;;;;;.\n"
         )
 
         # Assert the output matches the expected output
