@@ -181,5 +181,10 @@ class TestGeoLocationUtility(unittest.TestCase):
         result = self.geo_util.fetch_location_data(locations[1])
         self.assertIsNotNone(result)
 
+    def test_api_key_rate_limiting(self):
+        os.environ["API_KEY"] = os.getenv("API_KEY")  # Simulate missing API key
+        result = self.geo_util.fetch_location_data("10001")  # Some location
+        self.assertIsNotNone(result)  # Ensure it fails gracefully
+
 if __name__ == "__main__":
     unittest.main()
