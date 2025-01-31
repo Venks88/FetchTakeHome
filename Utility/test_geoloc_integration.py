@@ -34,3 +34,33 @@ def test_integration_invalid_zip():
     geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
     result = geo_util.fetch_location_data("99999")
     assert result is None
+
+def test_integration_invalid_Location():
+    geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
+    result = geo_util.fetch_location_data(";;;;, ;;;;")
+    assert result is None
+
+def test_integration_multi_Location():
+    geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
+    result = geo_util.fetch_location_data("Madison, MI", "Boston, MA", "Chicago, IL")
+    assert result is not None
+
+def test_integration_multi_zip():
+    geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
+    result = geo_util.fetch_location_data(";;;;, ;;;;")
+    assert result is None
+
+def test_integration_multi_LocationAndZip():
+    geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
+    result = geo_util.fetch_location_data(";;;;, ;;;;")
+    assert result is None
+
+def test_integration_multi_LocationOneInvalid():
+    geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
+    result = geo_util.fetch_location_data(";;;;, ;;;;")
+    assert result is None
+
+def test_integration_multi_ZipOneInvalid():
+    geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
+    result = geo_util.fetch_location_data(";;;;, ;;;;")
+    assert result is None
