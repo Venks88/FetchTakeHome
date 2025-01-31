@@ -58,6 +58,16 @@ class TestGeoLocationUtility(unittest.TestCase):
             self.assertEqual(result[0]['lat'], test_data[location]['lat'], f"Location name mismatch for {locations[location]}")
             self.assertEqual(result[0]['lon'], test_data[location]['lon'], f"State mismatch for {locations[location]}")
 
+    def test_integration_single_invalidzipcode(self):
+        # Instantiate the GeoLocationUtility with a mock API key
+        geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
+
+        # Test with multiple locations
+        locations = [";;;;;"]
+        for location in range(len(locations)):
+            result = geo_util.fetch_location_data(locations[location])
+            self.assertIsNone(result, f"Result should be None for {locations[location]}")
+
     def test_integration_single_location(self):
         test_data = [{'country': 'US', 'lat': 39.9622601, 'local_names': {'ar': 'كولومبوس', 'en': 'Columbus', 'pl': 'Columbus', 'ru': 'Колумбус', 'ta': 'கொலம்பஸ்', 'uk': 'Колумбус'}, 'lon': -83.0007065, 'name': 'Columbus', 'state': 'Ohio'}]
 
