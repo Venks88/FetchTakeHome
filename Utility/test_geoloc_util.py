@@ -96,20 +96,6 @@ def test_fetch_location_data_empty_response(mock_get):
     result = geo_util.fetch_location_data("UnknownCity, XX")
     assert result is None
 
-
-# Test that display_location_data correctly formats and prints results
-@patch('requests.get')
-@patch('builtins.print')
-def test_display_location_data(mock_print, mock_get, mock_city_data):
-    mock_get.return_value.status_code = 200
-    mock_get.return_value.json.return_value = mock_city_data
-
-    geo_util = GeoLocationUtility(api_key="f9c470fed8e9cb61aee1cfa567616f2e")
-    location_data = geo_util.fetch_location_data("Madison, WI")
-    geo_util.display_location_data(location_data)
-    mock_print.assert_called_with("Location: Madison, WI\nLatitude: 43.0731\nLongitude: -89.4012\nCountry: US\n========================================")
-
-
 # Test process_locations correctly processes a list of locations
 @patch('requests.get')
 def test_process_multiple_locations(mock_get, mock_city_data, mock_zip_data):

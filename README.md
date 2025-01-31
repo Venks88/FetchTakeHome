@@ -16,7 +16,7 @@ Fetch Take-Home Test
 
 ## Installation:
 ```bash
-pip install -r requirements.txt
+pip install -r Utility/requirements.txt
 ```
 
 ## Code Description:
