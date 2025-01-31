@@ -1,4 +1,5 @@
 import os
+import subprocess
 import unittest
 from geoloc_util import GeoLocationUtility  # Adjust the import if necessary
 
@@ -71,6 +72,36 @@ class TestGeoLocationUtility(unittest.TestCase):
             self.assertEqual(result[0]['lat'], test_data[location]['lat'], f"Location name mismatch for {locations[location]}")
             self.assertEqual(result[0]['lon'], test_data[location]['lon'], f"Location name mismatch for {locations[location]}")
 
+    def test_geolocation_output(self):
+        # Input locations
+        locations = ["Columbus, OH", "Chicago, IL"]
+
+        # Run the command as a subprocess
+        command = ["python", "geoloc_util.py", "--locations"] + locations
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+        # Check if the command ran successfully
+        self.assertEqual(result.returncode, 0)
+
+        # Get the output of the command
+        output = result.stdout
+
+        # Expected Output structure
+        expected_output = (
+                "Location: Columbus, Ohio\n"
+                "Latitude: 39.9622601\n"
+                "Longitude: -83.0007065\n"
+                "Country: US\n"
+                "========================================\n"
+                 "Location: Chicago, Illinois\n"
+                 "Latitude: 41.8755616\n"
+                 "Longitude: -87.6244212\n"
+                 "Country: US\n"
+                "========================================\n"
+        )
+
+        # Assert the output matches the expected output
+        self.assertEqual(output, expected_output)
 
 if __name__ == "__main__":
     unittest.main()
