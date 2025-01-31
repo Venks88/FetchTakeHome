@@ -1,6 +1,9 @@
 import os
 import subprocess
 import unittest
+from io import StringIO
+from unittest.mock import patch
+
 from geoloc_util import GeoLocationUtility  # Adjust the import if necessary
 
 
@@ -186,5 +189,68 @@ class TestGeoLocationUtility(unittest.TestCase):
         result = self.geo_util.fetch_location_data("10001")  # Some location
         self.assertIsNotNone(result)  # Ensure it fails gracefully
 
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_display_location_data_valid(self, mock_stdout):
+        # Mock valid location data
+        location_data = [
+            {
+                'name': 'New York',
+                'state': 'New York',
+                'lat': 40.7484,
+                'lon': -73.9967,
+                'country': 'US'
+            }
+        ]
+
+        geo_util = GeoLocationUtility(api_key="mocked_api_key")
+        geo_util.display_location_data(location_data)
+
+        # Get the printed output
+        output = mock_stdout.getvalue()
+
+        # Expected output for the given data
+        expected_output = (
+            "Location: New York, New York\n"
+            "Latitude: 40.7484\n"
+            "Longitude: -73.9967\n"
+            "Country: US\n"
+            "========================================\n"
+        )
+
+        # Check if the output matches
+        self.assertEqual(output.strip(), expected_output.strip())
+
+    @patch('sys.stdout', new_callable=StringIO)
+    @patch.object(GeoLocationUtility, 'fetch_state_from_lat_lon', return_value="New York")
+    def test_display_location_data_missing_state(self, mock_fetch_state, mock_stdout):
+        # Mock location data with missing 'state'
+        location_data = [
+            {
+                'name': 'Unknown City',
+                'state': 'Unknown',  # State is missing
+                'lat': 40.7484,
+                'lon': -73.9967,
+                'country': 'US'
+            }
+        ]
+
+        geo_util = GeoLocationUtility(api_key="mocked_api_key")
+        geo_util.display_location_data(location_data)
+
+        # Get the printed output
+        output = mock_stdout.getvalue()
+
+        # Expected output for the given data, with the state being fetched as "New York"
+        expected_output = (
+            "Location: Unknown City, New York\n"
+            "Latitude: 40.7484\n"
+            "Longitude: -73.9967\n"
+            "Country: US\n"
+            "========================================\n"
+        )
+
+        # Check if the output matches
+        self.assertEqual(output.strip(), expected_output.strip())
+        mock_fetch_state.assert_called_once_with({40.7484}, {-73.9967})  # Ensure the fetch_state_from_lat_lon method was called
 if __name__ == "__main__":
     unittest.main()
