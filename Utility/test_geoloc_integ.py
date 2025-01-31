@@ -6,6 +6,8 @@ from geoloc_util import GeoLocationUtility  # Adjust the import if necessary
 
 class TestGeoLocationUtility(unittest.TestCase):
 
+    geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
+
     def test_integration_multi_zipcode(self):
         test_data = [
             {'country': 'US', 'lat': 40.2845, 'lon': -82.284, 'name': 'Clay Township', 'zip': '43005'},
@@ -165,11 +167,19 @@ class TestGeoLocationUtility(unittest.TestCase):
             "Longitude: -73.0724\n"
             "Country: US\n"
             "========================================\n"
-            "Request failed: 404 Client Error: Not Found for url: http://api.openweathermap.org/geo/1.0/zip?zip=;;;;;,US&appid=f897a99d971b5eef57be6fafa0d83239\nError: Unable to fetch data for ;;;;;.\n"
+            "Request failed: 404 Client Error: Not Found for url: http://api.openweathermap.org/geo/1.0/zip?zip=;;;;;,US&appid=f897a99d971b5eef57be6fafa0d83239\nNo location data found for ;;;;;\n"
         )
 
         # Assert the output matches the expected output
         self.assertEqual(output, expected_output)
+
+    def test_special_characters_in_location(self):
+        # Test with cities that have special characters in their names
+        locations = ["San José, CA", "São Paulo, SP"]
+        result = self.geo_util.fetch_location_data(locations[0])
+        self.assertIsNotNone(result)
+        result = self.geo_util.fetch_location_data(locations[1])
+        self.assertIsNotNone(result)
 
 if __name__ == "__main__":
     unittest.main()

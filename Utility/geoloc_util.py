@@ -43,8 +43,8 @@ class GeoLocationUtility:
         # Make the API request
         response = self._make_api_request(url)
 
-        if not response:
-            print(f"Error: Unable to fetch data for {location}.")
+        if not response or len(response) == 0:
+            print(f"No location data found for {location}")
             return None
 
         # Ensure the return format is always a list
@@ -53,7 +53,7 @@ class GeoLocationUtility:
     def _make_api_request(self, url):
         """Helper function to make API request and handle errors."""
         try:
-            response = requests.get(url)
+            response = requests.get(url, timeout=30) # 10 seconds timeout in case the url is down.
             response.raise_for_status()  # Will raise an HTTPError for bad status codes
             data = response.json()
 
@@ -103,7 +103,10 @@ class GeoLocationUtility:
             "WI": "Wisconsin", "WY": "Wyoming"
         }
 
-        return us_states.get(code, "Invalid State Code")
+        if code not in us_states:
+            return ValueError(f"Invalid State Code: {code}")
+        else:
+            return us_states.get(code, "Invalid State Code")
 
 class CommandLineInterface:
     """Handles command-line input and invokes the GeoLocationUtility."""
