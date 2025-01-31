@@ -3,6 +3,11 @@
 
 import requests
 import argparse
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 class GeoLocationUtility:
     """Utility class to fetch latitude, longitude, and place details based on city/state or zip code."""
@@ -13,7 +18,7 @@ class GeoLocationUtility:
 
     def fetch_location_data(self, location):
         """Fetches location data based on city/state or zip code."""
-        if ',' in location:  # City, State format (e.g., "Madison, WI")
+        if ',' in location:  # City, State format (e.g., "Madison, WI, US")
             url = f"{self.base_url}/direct?q={location}&limit=1&appid={self.api_key}"
             response = requests.get(url)
         else:  # Zip code format
@@ -29,7 +34,7 @@ class GeoLocationUtility:
             print(f"No data found for {location}.")
             return None
 
-        return data[0]
+        return data
 
     def display_location_data(self, location_data):
         """Displays the fetched location data."""
@@ -52,7 +57,7 @@ class CommandLineInterface:
     def __init__(self):
         self.parser = argparse.ArgumentParser(description="Geolocation utility to fetch latitude, longitude, and place details.")
         self.parser.add_argument('--locations', nargs='+', help="City/State or Zip Code", required=True)
-        self.api_key = "f9c470fed8e9cb61aee1cfa567616f2e"  # API Key provided
+        self.api_key = os.getenv("API_KEY")  # API Key provided
         self.geo_util = GeoLocationUtility(api_key=self.api_key)
 
     def run(self):

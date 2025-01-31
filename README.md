@@ -16,6 +16,7 @@ Fetch Take-Home Test
 
 ## Installation:
 ```bash
+pip install python-dotenv
 pip install -r Utility/requirements.txt
 ```
 
