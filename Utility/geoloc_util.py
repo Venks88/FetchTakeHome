@@ -16,40 +16,94 @@ class GeoLocationUtility:
         self.api_key = api_key
         self.base_url = "http://api.openweathermap.org/geo/1.0"
 
+    def fetch_state_from_lat_lon(self, lat, lon):
+        url = f"{self.base_url}/reverse?lat={list(lat)[0]}&lon={list(lon)[0]}&limit=1&appid={self.api_key}"
+
+        # Make the API request
+        response = self._make_api_request(url)
+        if not response:
+            print(f"Error: Unable to fetch data for {lat} , {lon}.")
+            return None
+
+        # Ensure the return format is always a list
+        return response[0]['state'] or "Unknown"
+
     def fetch_location_data(self, location):
         """Fetches location data based on city/state or zip code."""
-        if ',' in location:  # City, State format (e.g., "Madison, WI, US")
+
+        if ',' in location:  # City, State format
+            city, state_code = map(str.strip, location.split(','))
+            state = self.get_statecode_from_state(state_code)
+            location = f"{city}, {state}"
             url = f"{self.base_url}/direct?q={location}&limit=1&appid={self.api_key}"
-            response = requests.get(url)
-        else:  # Zip code format
+
+        else:  # Assume zip code format
             url = f"{self.base_url}/zip?zip={location},US&appid={self.api_key}"
+
+        # Make the API request
+        response = self._make_api_request(url)
+
+        if not response:
+            print(f"Error: Unable to fetch data for {location}.")
+            return None
+
+        # Ensure the return format is always a list
+        return [response] if isinstance(response, dict) else response
+
+    def _make_api_request(self, url):
+        """Helper function to make API request and handle errors."""
+        try:
             response = requests.get(url)
+            response.raise_for_status()  # Will raise an HTTPError for bad status codes
+            data = response.json()
 
-        if response.status_code != 200:
-            print(f"Error: Unable to fetch data for {location}. HTTP Status Code: {response.status_code}")
+            if not data:
+                print(f"No data found for {url}.")
+                return None
+
+            return data
+
+        except requests.exceptions.RequestException as e:
+            print(f"Request failed: {e}")
             return None
-
-        data = response.json()
-        if not data:
-            print(f"No data found for {location}.")
-            return None
-
-        return data
 
     def display_location_data(self, location_data):
         """Displays the fetched location data."""
         if location_data:
-            print(f"Location: {location_data.get('name', 'Unknown')}, {location_data.get('state', 'Unknown')}")
-            print(f"Latitude: {location_data['lat']}")
-            print(f"Longitude: {location_data['lon']}")
-            print(f"Country: {location_data.get('country', 'Unknown')}")
-            print("="*40)
+            for data in location_data:
+                if data.get('state', 'Unknown') == 'Unknown':
+                    state = self.fetch_state_from_lat_lon({data.get('lat', 'Unknown')}, {data.get('lon', 'Unknown')})
+                    data['state'] = state
+                print(f"Location: {data.get('name', 'Unknown')}, {data.get('state', 'Unknown')}")
+                print(f"Latitude: {data.get('lat', 'Unknown')}")
+                print(f"Longitude: {data.get('lon', 'Unknown')}")
+                print(f"Country: {data.get('country', 'Unknown')}")
+                print("="*40)
 
     def process_locations(self, locations):
         """Process and display location data for multiple locations."""
         for location in locations:
             location_data = self.fetch_location_data(location)
             self.display_location_data(location_data)
+
+    def get_statecode_from_state(self, code):
+        us_states = {
+            "AL": "Alabama", "AK": "Alaska", "AZ": "Arizona", "AR": "Arkansas",
+            "CA": "California", "CO": "Colorado", "CT": "Connecticut", "DE": "Delaware",
+            "FL": "Florida", "GA": "Georgia", "HI": "Hawaii", "ID": "Idaho",
+            "IL": "Illinois", "IN": "Indiana", "IA": "Iowa", "KS": "Kansas",
+            "KY": "Kentucky", "LA": "Louisiana", "ME": "Maine", "MD": "Maryland",
+            "MA": "Massachusetts", "MI": "Michigan", "MN": "Minnesota", "MS": "Mississippi",
+            "MO": "Missouri", "MT": "Montana", "NE": "Nebraska", "NV": "Nevada",
+            "NH": "New Hampshire", "NJ": "New Jersey", "NM": "New Mexico", "NY": "New York",
+            "NC": "North Carolina", "ND": "North Dakota", "OH": "Ohio", "OK": "Oklahoma",
+            "OR": "Oregon", "PA": "Pennsylvania", "RI": "Rhode Island", "SC": "South Carolina",
+            "SD": "South Dakota", "TN": "Tennessee", "TX": "Texas", "UT": "Utah",
+            "VT": "Vermont", "VA": "Virginia", "WA": "Washington", "WV": "West Virginia",
+            "WI": "Wisconsin", "WY": "Wyoming"
+        }
+
+        return us_states.get(code, "Invalid State Code")
 
 class CommandLineInterface:
     """Handles command-line input and invokes the GeoLocationUtility."""
