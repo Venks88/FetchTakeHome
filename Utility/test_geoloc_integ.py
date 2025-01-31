@@ -2,7 +2,7 @@ import os
 import subprocess
 import unittest
 from io import StringIO
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from geoloc_util import GeoLocationUtility  # Adjust the import if necessary
 
@@ -252,5 +252,29 @@ class TestGeoLocationUtility(unittest.TestCase):
         # Check if the output matches
         self.assertEqual(output.strip(), expected_output.strip())
         mock_fetch_state.assert_called_once_with({40.7484}, {-73.9967})  # Ensure the fetch_state_from_lat_lon method was called
+
+    @patch('requests.get')
+    def test_make_api_request_empty_data(self, mock_get):
+        # Simulate an empty response (empty JSON data)
+        mock_response = MagicMock()
+        mock_response.json.return_value = []  # Empty data list
+        mock_response.raise_for_status = MagicMock()  # Mock the raise_for_status method to do nothing
+
+        # Mock the requests.get to return this response
+        mock_get.return_value = mock_response
+
+        geo_util = GeoLocationUtility(api_key="mocked_api_key")
+
+        # Call the private _make_api_request method
+        result = geo_util._make_api_request("http://mockedurl.com")
+
+        # Assert that the result is None (because the data is empty)
+        self.assertIsNone(result)
+
+        # Check if the print statement was called with the correct message
+        log = geo_util._make_api_request("http://mockedurl.com")
+        self.assertIsNone(log)
+
+
 if __name__ == "__main__":
     unittest.main()
