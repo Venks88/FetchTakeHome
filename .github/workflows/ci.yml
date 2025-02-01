@@ -28,7 +28,10 @@ jobs:
           echo "$PWD/venv/bin" >> $GITHUB_PATH
 
       - name: Install Dependencies
-        run: pip install -r ./Utility/requirements.txt
+        run: |
+          pip install --upgrade pip
+          pip install -r ./Utility/requirements.txt
+          pip install pytest
 
   run_tests:
     name: Run Tests
