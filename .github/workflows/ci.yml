@@ -63,7 +63,7 @@ jobs:
           pip install pytest-cov
           mkdir -p pytest_reports
           
-          pytest ./Utility --disable-warnings -v --junitxml=pytest_reports/results.xml --html=pytest_reports/results.html --cov=./Utility/geoloc_util.py --cov-report term-missing
+          pytest ./Utility --disable-warnings -v --junitxml=pytest_reports/results.xml --html=pytest_reports/results.html --cov=./Utility --cov-report term-missing
 
       - name: Upload Test Reports
         uses: actions/upload-artifact@v4
