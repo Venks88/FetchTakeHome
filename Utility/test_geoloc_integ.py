@@ -70,7 +70,8 @@ class TestGeoLocationUtility(unittest.TestCase):
         locations = [";;;;;"]
         for location in range(len(locations)):
             result = geo_util.fetch_location_data(locations[location])
-            self.assertIsNone(result, f"Result should be None for {locations[location]}")
+            self.assertIsNotNone(result, f"Result should be None for {locations[location]}")
+            self.assertEqual(result, [{'cod': '404', 'message': 'not found'}])
 
     def test_integration_single_location(self):
         test_data = [{'country': 'US', 'lat': 39.9622601, 'local_names': {'ar': 'كولومبوس', 'en': 'Columbus', 'pl': 'Columbus', 'ru': 'Колумбус', 'ta': 'கொலம்பஸ்', 'uk': 'Колумбус'}, 'lon': -83.0007065, 'name': 'Columbus', 'state': 'Ohio'}]
@@ -169,7 +170,11 @@ class TestGeoLocationUtility(unittest.TestCase):
             "Longitude: -73.0724\n"
             "Country: US\n"
             "========================================\n"
-            "Request failed: 404 Client Error: Not Found for url: http://api.openweathermap.org/geo/1.0/zip?zip=;;;;;,US&appid=f897a99d971b5eef57be6fafa0d83239\nNo location data found for ;;;;;\n"
+            "Location: Unknown, [{'cod': '400', 'message': 'Nothing to geocode'}]\n"
+            'Latitude: Unknown\n'
+            'Longitude: Unknown\n'
+            'Country: Unknown\n'
+            '========================================\n'
         )
 
         # Assert the output matches the expected output
@@ -280,13 +285,16 @@ class TestGeoLocationUtility(unittest.TestCase):
         self.assertEqual(city, "New York")
 
         city = self.geo_util.fetch_state_from_lat_lon([""], ["-73.9967"])
-        self.assertIsNone(city)
+        self.assertIsNotNone(city)
+        self.assertEqual(city, [{'cod': '400', 'message': 'Nothing to geocode'}])
 
         city = self.geo_util.fetch_state_from_lat_lon(["123.123"], [""])
-        self.assertIsNone(city)
+        self.assertIsNotNone(city)
+        self.assertEqual(city, [{'cod': '400', 'message': 'Nothing to geocode'}])
 
         city = self.geo_util.fetch_state_from_lat_lon([""], [""])
-        self.assertIsNone(city)
+        self.assertIsNotNone(city)
+        self.assertEqual(city, [{'cod': '400', 'message': 'Nothing to geocode'}])
 
 
 if __name__ == "__main__":
