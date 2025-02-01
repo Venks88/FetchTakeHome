@@ -20,7 +20,7 @@ class TestGeolocUtil:
     ])
     def test_geoloc_output(self, locations, expected_output):
         # Construct command
-        cmd = ["python", "geoloc_util.py", "--locations"] + locations
+        cmd = ["python", "./Utility/geoloc_util.py", "--locations"] + locations
 
         # Run script and capture stdout
         result = subprocess.run(cmd, capture_output=True, text=True)
