@@ -12,7 +12,7 @@ load_dotenv()
 class TestGeoLocationUtilitySecurity(unittest.TestCase):
     # Test for input sanitization (e.g., checking for XSS or other malicious input)
     @patch('requests.get')
-    def test_input_validation_city(mock_get):
+    def test_input_validation_city(self, mock_get):
         mock_get.return_value.status_code = 200
         geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
 
@@ -22,7 +22,7 @@ class TestGeoLocationUtilitySecurity(unittest.TestCase):
 
     # Test for rate-limiting behavior (simulate too many requests)
     @patch('requests.get')
-    def test_rate_limiting(mock_get):
+    def test_rate_limiting(self, mock_get):
         mock_get.return_value.status_code = 429  # Too Many Requests
         geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
 
@@ -31,7 +31,7 @@ class TestGeoLocationUtilitySecurity(unittest.TestCase):
 
     # Test for checking API key leakage in logs or error messages
     @patch('requests.get')
-    def test_api_key_security(mock_get):
+    def test_api_key_security(self, mock_get):
         mock_get.return_value.status_code = 403  # Forbidden (invalid API key)
         geo_util = GeoLocationUtility(api_key="invalid_api_key")
 
