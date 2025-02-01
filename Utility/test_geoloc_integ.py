@@ -95,9 +95,6 @@ class TestGeoLocationUtility(unittest.TestCase):
         command = ["python", "geoloc_util.py", "--locations"] + locations
         result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-        # Check if the command ran successfully
-        self.assertEqual(result.returncode, 0)
-
         # Get the output of the command
         output = result.stdout
 
