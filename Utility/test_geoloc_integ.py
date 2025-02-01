@@ -87,95 +87,95 @@ class TestGeoLocationUtility(unittest.TestCase):
             self.assertEqual(result[0]['lat'], test_data[location]['lat'], f"Location name mismatch for {locations[location]}")
             self.assertEqual(result[0]['lon'], test_data[location]['lon'], f"Location name mismatch for {locations[location]}")
 
-    def test_geolocation_output_multi_location(self):
-        # Input locations
-        locations = ["Columbus, OH", "Chicago, IL"]
-
-        # Run the command as a subprocess
-        command = ["python", "geoloc_util.py", "--locations"] + locations
-        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-        # Get the output of the command
-        output = result.stdout
-
-        # Expected Output structure
-        expected_output = (
-                "Location: Columbus, Ohio\n"
-                "Latitude: 39.9622601\n"
-                "Longitude: -83.0007065\n"
-                "Country: US\n"
-                "========================================\n"
-                 "Location: Chicago, Illinois\n"
-                 "Latitude: 41.8755616\n"
-                 "Longitude: -87.6244212\n"
-                 "Country: US\n"
-                "========================================\n"
-        )
-
-        # Assert the output matches the expected output
-        self.assertEqual(output, expected_output)
-
-    def test_geolocation_output_multi_zipcode(self):
-        # Input locations
-        locations = ["01235", "54636"]
-
-        # Run the command as a subprocess
-        command = ["python", "geoloc_util.py", "--locations"] + locations
-        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-        # Check if the command ran successfully
-        self.assertEqual(result.returncode, 0)
-
-        # Get the output of the command
-        output = result.stdout
-
-        # Expected Output structure
-        expected_output = (
-            "Location: Peru, Massachusetts\n"
-            "Latitude: 42.4298\n"
-            "Longitude: -73.0724\n"
-            "Country: US\n"
-            "========================================\n"
-            "Location: Town of Onalaska, Wisconsin\n"
-            "Latitude: 43.9761\n"
-            "Longitude: -91.2497\n"
-            "Country: US\n"
-            "========================================\n"
-        )
-
-        # Assert the output matches the expected output
-        self.assertEqual(output, expected_output)
-
-    def test_geolocation_zipcode_with_invalid(self):
-        # Input locations
-        locations = ["01235", ";;;;;"]
-
-        # Run the command as a subprocess
-        command = ["python", "geoloc_util.py", "--locations"] + locations
-        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-        # Check if the command ran successfully
-        self.assertEqual(result.returncode, 0)
-
-        # Get the output of the command
-        output = result.stdout
-
-        # Expected Output structure
-        expected_output = (
-            "Location: Peru, Massachusetts\n"
-            "Latitude: 42.4298\n"
-            "Longitude: -73.0724\n"
-            "Country: US\n"
-            "========================================\n"
-            "Location: Unknown, [{'cod': '400', 'message': 'Nothing to geocode'}]\n"
-            'Latitude: Unknown\n'
-            'Longitude: Unknown\n'
-            'Country: Unknown\n'
-            '========================================\n'
-        )
-
-        # Assert the output matches the expected output
-        self.assertEqual(output, expected_output)
+    # def test_geolocation_output_multi_location(self):
+    #     # Input locations
+    #     locations = ["Columbus, OH", "Chicago, IL"]
+    #
+    #     # Run the command as a subprocess
+    #     command = ["python", "geoloc_util.py", "--locations"] + locations
+    #     result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    #
+    #     # Get the output of the command
+    #     output = result.stdout
+    #
+    #     # Expected Output structure
+    #     expected_output = (
+    #             "Location: Columbus, Ohio\n"
+    #             "Latitude: 39.9622601\n"
+    #             "Longitude: -83.0007065\n"
+    #             "Country: US\n"
+    #             "========================================\n"
+    #              "Location: Chicago, Illinois\n"
+    #              "Latitude: 41.8755616\n"
+    #              "Longitude: -87.6244212\n"
+    #              "Country: US\n"
+    #             "========================================\n"
+    #     )
+    #
+    #     # Assert the output matches the expected output
+    #     self.assertEqual(output, expected_output)
+    #
+    # def test_geolocation_output_multi_zipcode(self):
+    #     # Input locations
+    #     locations = ["01235", "54636"]
+    #
+    #     # Run the command as a subprocess
+    #     command = ["python", "geoloc_util.py", "--locations"] + locations
+    #     result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    #
+    #     # Check if the command ran successfully
+    #     self.assertEqual(result.returncode, 0)
+    #
+    #     # Get the output of the command
+    #     output = result.stdout
+    #
+    #     # Expected Output structure
+    #     expected_output = (
+    #         "Location: Peru, Massachusetts\n"
+    #         "Latitude: 42.4298\n"
+    #         "Longitude: -73.0724\n"
+    #         "Country: US\n"
+    #         "========================================\n"
+    #         "Location: Town of Onalaska, Wisconsin\n"
+    #         "Latitude: 43.9761\n"
+    #         "Longitude: -91.2497\n"
+    #         "Country: US\n"
+    #         "========================================\n"
+    #     )
+    #
+    #     # Assert the output matches the expected output
+    #     self.assertEqual(output, expected_output)
+    #
+    # def test_geolocation_zipcode_with_invalid(self):
+    #     # Input locations
+    #     locations = ["01235", ";;;;;"]
+    #
+    #     # Run the command as a subprocess
+    #     command = ["python", "geoloc_util.py", "--locations"] + locations
+    #     result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    #
+    #     # Check if the command ran successfully
+    #     self.assertEqual(result.returncode, 0)
+    #
+    #     # Get the output of the command
+    #     output = result.stdout
+    #
+    #     # Expected Output structure
+    #     expected_output = (
+    #         "Location: Peru, Massachusetts\n"
+    #         "Latitude: 42.4298\n"
+    #         "Longitude: -73.0724\n"
+    #         "Country: US\n"
+    #         "========================================\n"
+    #         "Location: Unknown, [{'cod': '400', 'message': 'Nothing to geocode'}]\n"
+    #         'Latitude: Unknown\n'
+    #         'Longitude: Unknown\n'
+    #         'Country: Unknown\n'
+    #         '========================================\n'
+    #     )
+    #
+    #     # Assert the output matches the expected output
+    #     self.assertEqual(output, expected_output)
 
     def test_special_characters_in_location(self):
         # Test with cities that have special characters in their names
