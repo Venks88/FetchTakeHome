@@ -28,8 +28,11 @@ class GeoLocationUtility:
         if any('message' in item for item in response):
             return [response]
         else:
-            # Ensure the return format is always a list
-            return response[0]['state'] or "Unknown"
+            if len(response) > 0:
+                return response
+            else:
+                # Ensure the return format is always a list
+                return response[0]['state'] or "Unknown"
 
     def fetch_location_data(self, location):
         """Fetches location data based on city/state or zip code."""

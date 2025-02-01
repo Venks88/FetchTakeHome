@@ -75,6 +75,21 @@ class TestGeoLocationUtility(unittest.TestCase):
             self.assertIsNotNone(result, f"Result should be None for {locations[location]}")
             self.assertEqual(result, [{'cod': '404', 'message': 'not found'}])
 
+    def test_integration_single_invalidlocation(self):
+        # Instantiate the GeoLocationUtility with a mock API key
+        geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
+
+        # Test with multiple locations
+        locations = ["123, 123"]
+        for location in range(len(locations)):
+            result = geo_util.fetch_location_data(locations[location])
+            self.assertIsNotNone(result, f"Result should be None for {locations[location]}")
+            self.assertEqual(result, [{'country': 'SI',
+                                               'lat': 45.985384,
+                                               'local_names': {'ru': 'Шкофлица', 'sl': 'Škofljica', 'sr': 'Шкофљица'},
+                                               'lon': 14.5728547,
+                                               'name': 'Škofljica'}])
+
     def test_integration_single_location(self):
         test_data = [{'country': 'US', 'lat': 39.9622601, 'local_names': {'ar': 'كولومبوس', 'en': 'Columbus', 'pl': 'Columbus', 'ru': 'Колумбус', 'ta': 'கொலம்பஸ்', 'uk': 'Колумбус'}, 'lon': -83.0007065, 'name': 'Columbus', 'state': 'Ohio'}]
 
@@ -191,7 +206,7 @@ class TestGeoLocationUtility(unittest.TestCase):
 
     def test_fetch_state_from_lat_lon(self):
         city = self.geo_util.fetch_state_from_lat_lon([40.7484],[-73.9967])
-        self.assertEqual(city, "New York")
+        self.assertEqual(city[0]['state'], "New York")
 
         city = self.geo_util.fetch_state_from_lat_lon([""], ["-73.9967"])
         self.assertIsNotNone(city)

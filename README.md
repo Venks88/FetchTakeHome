@@ -16,7 +16,12 @@ Fetch Take-Home Test
 
 ## Installation:
 ```bash
+pip install --upgrade pip
+pip install pytest
 pip install python-dotenv
+pip install requests
+pip install pytest pytest-html
+pip install pytest-cov
 pip install -r Utility/requirements.txt
 ```
 
@@ -28,3 +33,24 @@ pip install -r Utility/requirements.txt
 3. display_location_data: After fetching the data, this function formats and prints the location details, including latitude, longitude, and place name. 
 4. main: This function processes the locations provided by the user and prints the results for each location. 
 5. argparse: The command-line argument parsing is handled by the argparse library, which allows the user to input multiple locations.
+
+## Some easy tests to run:
+**_This can be used to see if you have all the files and libraries required:_**
+
+```bash
+python ./Utility/geoloc_util.py --locations "123, MI"
+python ./Utility/geoloc_util.py --locations "12345" "02135" "10001"
+python ./Utility/geoloc_util.py --locations "12345" "02135" "10001"
+python ./Utility/geoloc_util.py --locations "qweqeqeqwe,qweqweq"
+python ./Utility/geoloc_util.py --locations "Columbus, OH"
+python ./Utility/geoloc_util.py --locations "Columbus, OH" "Chicago, IL"
+python ./Utility/geoloc_util.py --locations ";;;;;"
+python ./Utility/geoloc_util.py --locations ""
+python ./Utility/geoloc_util.py --locations "123123123123"
+python ./Utility/geoloc_util.py --locations "12312"
+python ./Utility/geoloc_util.py --locations "90210"
+python ./Utility/geoloc_util.py --locations "9021090210"
+python ./Utility/geoloc_util.py --locations "9 0 2 1 0"
+python ./Utility/geoloc_util.py --locations "<<9 0 2 1 0>>"
+python ./Utility/geoloc_util.py --locations "Columbus, OH" "Chicago, IL" "12345" "02135" "10001" "123123123123"
+```
