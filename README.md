@@ -14,6 +14,10 @@ Fetch Take-Home Test
 4. API Communication: We will use Python’s requests library to communicate with the OpenWeatherMap API. 
 5. Test the Utility: Create a suite of tests using Pytest.
 
+## Gitlab Actions Job:
+https://github.com/Venks88/FetchTakeHome/actions/runs/13092927440 -> Last one submitted.
+The job has access of an HTML report for all tests run.
+
 ## Installation:
 ```bash
 pip install --upgrade pip
