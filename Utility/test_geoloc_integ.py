@@ -276,5 +276,19 @@ class TestGeoLocationUtility(unittest.TestCase):
         self.assertIsNone(log)
 
 
+    def test_fetch_state_from_lat_lon(self):
+        city = self.geo_util.fetch_state_from_lat_lon([40.7484],[-73.9967])
+        self.assertEqual(city, "New York")
+
+        city = self.geo_util.fetch_state_from_lat_lon([""], ["-73.9967"])
+        self.assertIsNone(city)
+
+        city = self.geo_util.fetch_state_from_lat_lon(["123.123"], [""])
+        self.assertIsNone(city)
+
+        city = self.geo_util.fetch_state_from_lat_lon([""], [""])
+        self.assertIsNone(city)
+
+
 if __name__ == "__main__":
     unittest.main()
