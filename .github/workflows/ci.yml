@@ -54,6 +54,9 @@ jobs:
 
       - name: Run Pytest
         run: |
+          pip install --upgrade pip
+          pip install -r ./Utility/requirements.txt
+          pip install pytest
           mkdir -p pytest_reports
           pytest ./Utility --maxfail=1 --disable-warnings -q --junitxml=pytest_reports/results.xml
 
