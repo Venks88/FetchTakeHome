@@ -36,7 +36,7 @@ jobs:
           path: |
             venv
             .pytest_cache
-          key: venv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+          key: venv-${{ runner.os }}-${{ hashFiles('./Utility/requirements.txt') }}
 
   run_tests:
     name: Run Tests
@@ -52,7 +52,7 @@ jobs:
           path: |
             venv
             .pytest_cache
-          key: venv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+          key: venv-${{ runner.os }}-${{ hashFiles('./Utility/requirements.txt') }}
 
       - name: Activate Virtual Environment
         run: echo "$PWD/venv/bin" >> $GITHUB_PATH
