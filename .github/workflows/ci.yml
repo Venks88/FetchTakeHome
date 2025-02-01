@@ -60,7 +60,7 @@ jobs:
           pip install python-dotenv
           pip install requests
           mkdir -p pytest_reports
-          pytest ./Utility --maxfail=1 --disable-warnings -q --junitxml=pytest_reports/results.xml
+          pytest ./Utility --disable-warnings -q --junitxml=pytest_reports/results.xml
 
       - name: Upload Test Reports
         uses: actions/upload-artifact@v4
