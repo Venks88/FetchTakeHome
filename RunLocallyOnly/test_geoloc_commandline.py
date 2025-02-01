@@ -1,6 +1,7 @@
 import pytest
 import subprocess
 
+
 class TestGeolocUtil:
     @pytest.mark.parametrize("locations, expected_output", [
         (["123, MI"], "Location: Škofljica"),
@@ -20,7 +21,7 @@ class TestGeolocUtil:
     ])
     def test_geoloc_output(self, locations, expected_output):
         # Construct command
-        cmd = ["python", "./Utility/geoloc_util.py", "--locations"] + locations
+        cmd = ["python", "../Utility/geoloc_util.py", "--locations"] + locations
 
         # Run script and capture stdout
         result = subprocess.run(cmd, capture_output=True, text=True)
