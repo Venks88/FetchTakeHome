@@ -3,7 +3,6 @@ import subprocess
 import unittest
 from io import StringIO
 from unittest.mock import patch, MagicMock
-
 from geoloc_util import GeoLocationUtility  # Adjust the import if necessary
 
 
