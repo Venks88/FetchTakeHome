@@ -53,8 +53,7 @@ class GeoLocationUtility:
     def _make_api_request(self, url):
         """Helper function to make API request and handle errors."""
         try:
-            response = requests.get(url, timeout=30) # 10 seconds timeout in case the url is down.
-            response.raise_for_status()  # Will raise an HTTPError for bad status codes
+            response = requests.get(url, timeout=30) # 10 seconds timeout in case the url is down.s
             data = response.json()
 
             if not data:
