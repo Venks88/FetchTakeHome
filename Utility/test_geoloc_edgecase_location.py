@@ -75,7 +75,7 @@ class TestGeoLocationUtility(unittest.TestCase):
         state = geo_util.fetch_state_from_lat_lon(lat, lon)
 
         # Assert that the state returned is "Ohio"
-        self.assertEqual(state, "Ohio")
+        self.assertEqual(state[0]['state'], "Ohio")
 
     def test_fetch_location_data_invalid_key(self):
         """Test if the API returns a 401 status when there is no valid API key."""
