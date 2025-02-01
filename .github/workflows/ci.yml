@@ -60,8 +60,10 @@ jobs:
           pip install python-dotenv
           pip install requests
           pip install pytest pytest-html
+          pip install pytest-cov
           mkdir -p pytest_reports
-          pytest ./Utility --disable-warnings -q --junitxml=pytest_reports/results.xml --html=pytest_reports/results.html
+          
+          pytest ./Utility --disable-warnings -v --junitxml=pytest_reports/results.xml --html=pytest_reports/results.html --cov=./Utility/geoloc_util.py --cov-report term-missing
 
       - name: Upload Test Reports
         uses: actions/upload-artifact@v4
