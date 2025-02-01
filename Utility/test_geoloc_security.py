@@ -1,6 +1,6 @@
-import os
 import pytest
 import unittest
+import os
 from unittest.mock import patch
 from dotenv import load_dotenv
 from geoloc_util import GeoLocationUtility

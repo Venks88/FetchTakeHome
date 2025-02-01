@@ -1,6 +1,11 @@
+import os
 import unittest
 from parameterized import parameterized
 from geoloc_util import GeoLocationUtility
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class TestGeoLocationUtility(unittest.TestCase):
@@ -47,7 +52,7 @@ class TestGeoLocationUtility(unittest.TestCase):
         """Test the fetch_location_data method with different location inputs."""
 
         # Use a valid API key here
-        api_key = 'f897a99d971b5eef57be6fafa0d83239'  # Replace with a valid API key
+        api_key = os.getenv("API_KEY")  # Replace with a valid API key
         geo_util = GeoLocationUtility(api_key)
 
         # Fetch the location data
@@ -60,7 +65,7 @@ class TestGeoLocationUtility(unittest.TestCase):
         """Test the fetch_state_from_lat_lon method with real data."""
 
         # Use a valid API key here
-        api_key = 'f897a99d971b5eef57be6fafa0d83239'  # Replace with a valid API key
+        api_key = os.getenv("API_KEY")  # Replace with a valid API key
         geo_util = GeoLocationUtility(api_key)
 
         # Test with known lat/lon for Columbus, OH

@@ -1,10 +1,12 @@
 import os
-import subprocess
 import unittest
 from io import StringIO
 from unittest.mock import patch, MagicMock
 from geoloc_util import GeoLocationUtility  # Adjust the import if necessary
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 
 class TestGeoLocationUtility(unittest.TestCase):
 

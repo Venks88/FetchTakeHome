@@ -1,6 +1,11 @@
 import unittest
+import os
 from parameterized import parameterized
 from geoloc_util import GeoLocationUtility  # Assuming your code is in geo_location_utility.py
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class TestGeoLocationUtilityZip(unittest.TestCase):
@@ -48,7 +53,7 @@ class TestGeoLocationUtilityZip(unittest.TestCase):
         """Test the fetch_location_data method with different zip code inputs."""
 
         # Use a valid API key here
-        api_key = 'f897a99d971b5eef57be6fafa0d83239'  # Replace with a valid API key
+        api_key = os.getenv("API_KEY")  # Replace with a valid API key
         geo_util = GeoLocationUtility(api_key)
 
         # Fetch the location data using the provided zip code
