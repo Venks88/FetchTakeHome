@@ -57,3 +57,13 @@ python ./Utility/geoloc_util.py --locations "Columbus, OH" "Chicago, IL" "12345"
 
 ## Some local tests to run based of the command line:
 **_Run this locally:_**
+```bash
+cd RunLocallyOnly
+pytest test_geoloc_commandline.py -v
+```
+
+## Run all integration tests locally:
+**_Run tests locally:_**
+```bash
+pytest ./Utility -v
+```
