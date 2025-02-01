@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+
 @pytest.mark.benchmark(group="performance")
 def test_benchmark_multiple_city_requests(benchmark):
     geo_util = GeoLocationUtility(api_key=os.getenv("API_KEY"))
@@ -13,6 +14,7 @@ def test_benchmark_multiple_city_requests(benchmark):
 
     # Benchmark the process_locations method with a large number of requests
     benchmark(lambda: geo_util.process_locations(locations))
+
 
 @pytest.mark.benchmark(group="performance")
 def test_benchmark_large_zip_codes(benchmark):
