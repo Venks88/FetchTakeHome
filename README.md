@@ -54,3 +54,6 @@ python ./Utility/geoloc_util.py --locations "9 0 2 1 0"
 python ./Utility/geoloc_util.py --locations "<<9 0 2 1 0>>"
 python ./Utility/geoloc_util.py --locations "Columbus, OH" "Chicago, IL" "12345" "02135" "10001" "123123123123"
 ```
+
+## Some local tests to run based of the command line:
+**_Run this locally:_**

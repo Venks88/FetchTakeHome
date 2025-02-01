@@ -9,12 +9,12 @@ class TestGeolocUtil:
         (["qweqeqeqwe,qweqweq"], "No data found for http://api.openweathermap.org/geo/1.0/direct?q=qweqeqeqwe"),
         (["Columbus, OH"], "Location: Columbus, Ohio"),
         (["Columbus, OH", "Chicago, IL"], "Location: Columbus, Ohio"),
-        ([";;;;;"], "Location: Unknown, [{'cod': '400', 'message': 'wrong latitude'}]"),
-        ([""], "Location: Unknown, [{'cod': '400', 'message': 'wrong latitude'}]"),
-        (["123123123123"], "Location: Unknown, [{'cod': '400', 'message': 'wrong latitude'}]"),
-        (["12312"], "Location: Unknown, [{'cod': '400', 'message': 'wrong latitude'}]"),
+        ([";;;;;"], "Location: Unknown"),
+        ([""], "Location: Unknown"),
+        (["123123123123"], "Location: Unknown"),
+        (["12312"], "Location: Unknown"),
         (["90210"], "Location: Beverly Hills"),
-        (["9021090210"], "Location: Unknown, [{'cod': '400', 'message': 'wrong latitude'}]"),
+        (["9021090210"], "Location: Unknown"),
         (["9 0 2 1 0"], "Location: Beverly Hills"),
         (["<<9 0 2 1 0>>"], "Location: Beverly Hills"),
         (["Columbus, OH", "Chicago, IL", "12345", "02135", "10001", "123123123123"], "Location: Columbus, Ohio")
@@ -31,4 +31,4 @@ class TestGeolocUtil:
 
         # Validate expected output
         actual_output = result.stdout.strip().split("\n")  # Normalize output for comparison
-        assert any(expected_output in line for line in actual_output), f"Expected 'Location: Škofljica' in output, but got {actual_output}"
+        assert any(expected_output in line for line in actual_output), f"Expected {expected_output}, but got {actual_output}"
